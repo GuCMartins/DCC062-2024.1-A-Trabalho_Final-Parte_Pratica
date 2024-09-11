@@ -3,44 +3,76 @@
 #include <list>
 #include <vector>
 
-//struct responsável por criar a página, cada página contém um item, sendo um número e seu bit R, sendo este iniciado com o valor "false".
+/* Estrutura responsável por simbolizar a página, cada página contém um item,
+   sendo um número e seu bit R, sendo este iniciado com o valor "false". */
+
 struct Pagina {
     int numero;
     bool bitR;
-    Pagina(int n){
-        numero = n;
-        bitR = false;
-    }
+    Pagina(int n) : numero(n), bitR(false) {}
 };
+
+// Função para verificar se a página atual está na fila
+bool presente_na_fila(int paginaAtual, std::list<Pagina>& fila) {
+
+    for (std::list<Pagina>::iterator it = fila.begin(); it != fila.end(); it++) {
+        if (it->numero == paginaAtual) {
+            it->bitR = true;  // Modifica o bitR da página encontrada
+            return true;
+        }
+    }
+    return false;
+}
+
+void imprime_fila(std::list<Pagina>& fila){
+    if (fila.size() != 0){
+    for (std::list<Pagina>::iterator it = fila.begin(); it != fila.end(); it++)
+        std::cout << it->numero << "(" << it->bitR << "), ";
+    std::cout << std::endl;
+    }
+
+    else
+        std::cout << "Memória Vazia" << std::endl;  
+}
 
 void segundaChance(std::vector<int>& paginas, int n, int capacidade) {
     std::list<Pagina> fila;
     int pageFault = 0;
     int hit = 0;
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
+        imprime_fila(fila);
+
         int paginaAtual = paginas[i];
-
-        if (fila.size() == capacidade) { //memória cheia
-            //verificar se o item está na memória, dar o hit e modificar seu bit R para 1
-
-            //percorrer a lista e verificar qual página será substituida e realizar a substituição
-
-            //inserir paginaAtual na fila
+        std::cout << "Inserindo a página de valor: " << paginaAtual << std::endl;
+     
+        if (presente_na_fila(paginaAtual, fila)) {
+            std::cout << "Página encontrada na memória!" << std::endl;
+            hit++;
+        } 
+        
+        else {
+            pageFault++;
+            if (fila.size() == capacidade){
+                while (!fila.empty() && fila.front().bitR == true) {
+                    Pagina p = fila.front();
+                    fila.pop_front();
+                    p.bitR = false;
+                    fila.push_back(p);
+                }
+                if (!fila.empty()) {
+                    fila.pop_front();
+                }
+            }
+            fila.push_back(Pagina(paginaAtual));  // Cria uma nova página com o número atual
         }
+    }
 
-        else{
-            //verificar se o item está na memória, dar o hit e modificar seu bit R para 1
-
-            //dar page fault e inserir no final da fila
-        }
-
-    }       
+    std::cout << "PageFaults: " << pageFault << std::endl;
+    std::cout << "Hits: " << hit << std::endl;
 }
 
-
-void criando_paginas(std::vector<int>& paginas)
-{
+void criando_paginas(std::vector<int>& paginas) {
     std::random_device rd;
     std::mt19937 gerador(rd());
     std::uniform_int_distribution<int> dist(0, 9);
@@ -48,9 +80,7 @@ void criando_paginas(std::vector<int>& paginas)
     for (int i = 0; i < paginas.size(); i++) {
         paginas[i] = dist(gerador);
     }
-
 }
-
 
 int main() {
     int n = 20;
@@ -58,7 +88,7 @@ int main() {
 
     criando_paginas(paginas);
 
-    int frames = 3;  //Quantidade de frames na memória
+    int frames = 3;  // Quantidade de frames na memória
 
     segundaChance(paginas, n, frames);
 
