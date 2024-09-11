@@ -26,13 +26,19 @@ bool presente_na_fila(int paginaAtual, std::list<Pagina>& fila) {
 
 void imprime_fila(std::list<Pagina>& fila){
     if (fila.size() != 0){
-    for (std::list<Pagina>::iterator it = fila.begin(); it != fila.end(); it++)
-        std::cout << it->numero << "(" << it->bitR << "), ";
+        std::cout << "Paginas na memoria: ";
+    for (std::list<Pagina>::iterator it = fila.begin(); it != fila.end(); it++){
+        if (it == --fila.end()){   
+            std::cout << it->numero << "(" << it->bitR << "). ";
+        }
+        else
+            std::cout << it->numero << "(" << it->bitR << "), ";
+    }
     std::cout << std::endl;
     }
 
     else
-        std::cout << "Memória Vazia" << std::endl;  
+        std::cout << "Memoria Vazia" << std::endl;  
 }
 
 void segundaChance(std::vector<int>& paginas, int n, int capacidade) {
@@ -40,19 +46,21 @@ void segundaChance(std::vector<int>& paginas, int n, int capacidade) {
     int pageFault = 0;
     int hit = 0;
 
+    imprime_fila(fila);
+
     for (int i = 0; i < n; i++) {
-        imprime_fila(fila);
 
         int paginaAtual = paginas[i];
-        std::cout << "Inserindo a página de valor: " << paginaAtual << std::endl;
+        std::cout << "\nInserindo a pagina de valor: " << paginaAtual << std::endl;
      
         if (presente_na_fila(paginaAtual, fila)) {
-            std::cout << "Página encontrada na memória!" << std::endl;
+            std::cout << "\nPágina encontrada na memoria!" << std::endl;
             hit++;
         } 
         
         else {
             pageFault++;
+            std::cout << "\nPagina nao esta presente na memoria!" << std::endl;
             if (fila.size() == capacidade){
                 while (!fila.empty() && fila.front().bitR == true) {
                     Pagina p = fila.front();
@@ -61,14 +69,16 @@ void segundaChance(std::vector<int>& paginas, int n, int capacidade) {
                     fila.push_back(p);
                 }
                 if (!fila.empty()) {
+                    Pagina p = fila.front();
+                    std::cout << "\nRetirando pagina de valor: " << p.numero << std::endl; 
                     fila.pop_front();
                 }
             }
             fila.push_back(Pagina(paginaAtual));  // Cria uma nova página com o número atual
         }
+        imprime_fila(fila);
     }
-
-    std::cout << "PageFaults: " << pageFault << std::endl;
+    std::cout << "\nPageFaults: " << pageFault << std::endl;
     std::cout << "Hits: " << hit << std::endl;
 }
 
