@@ -5,14 +5,14 @@
 
 using namespace std;
 
-#ifdef WIN32
-    #include <windows.h>
-    #define clear_screen() system("cls")
-    #define wait Sleep(3000)
-#else
-    #define clear_screen() system("/usr/bin/clear")
-    #define wait sleep(3)
-#endif
+// #ifdef WIN32
+//     #include <windows.h>
+//     #define clear_screen() system("cls")
+//     #define wait Sleep(3000)
+// #else
+//     #define clear_screen() system("/usr/bin/clear")
+//     #define wait sleep(3)
+// #endif
 
 // Estrutura da lista que será criada
 class Page {
@@ -108,7 +108,7 @@ class Queue{
 };
 
 void show_erro() {
-    clear_screen();
+    system("cls");
     cout << "\nErro de Digitação: \n";
     cout << "--------------------------------------\n";
     cout << "\nDigite uma opção válida (pressione -Enter- p/ continuar)!\n\n";
@@ -129,7 +129,7 @@ int main() {
     char escolha;
     do {
         // Limpando a tela e showndo o menu
-        clear_screen();
+        system("cls");
         cout << "\nAlgoritmo de substituição de Páginas: Segunda Chance\n\n";
         cout << "Escolha uma opção: \n";
         cout << "\t1 - Inserir Página\n";
@@ -156,7 +156,8 @@ int main() {
             case '9':
                 cout << "\nObrigado por utilizar esse programa!\n";
                 cout << "------>Terminal de Informação<------\n\n";
-                wait;
+                cin.ignore();
+                cin.get();
                 exit(0);
                 break;
             default:
