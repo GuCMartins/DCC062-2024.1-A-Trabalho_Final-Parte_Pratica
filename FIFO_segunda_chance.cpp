@@ -54,7 +54,7 @@ void segundaChance(std::vector<int>& paginas, int n, int capacidade) {
         std::cout << "\nInserindo a pagina de valor: " << paginaAtual << std::endl;
      
         if (presente_na_fila(paginaAtual, fila)) {
-            std::cout << "\nPágina encontrada na memoria!" << std::endl;
+            std::cout << "\nPagina encontrada na memoria!" << std::endl;
             hit++;
         } 
         
