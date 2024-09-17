@@ -86,11 +86,9 @@ void segundaChance(std::vector<int>& paginas, int capacidade) {
                     std::cout << "Pagina de valor " << p.numero << " possui bit R = 1, logo vai para fim da fila!" << std::endl;
                     imprime_fila(fila);  
                 }
-                if (!fila.empty()) {
-                    Pagina p = fila.front();
-                    std::cout << "\nRetirando pagina de valor: " << p.numero << std::endl; 
-                    fila.pop_front();
-                }
+                Pagina p = fila.front();
+                std::cout << "\nRetirando pagina de valor: " << p.numero << std::endl; 
+                fila.pop_front();
             }
             fila.push_back(Pagina(paginaAtual));  // Cria uma nova página com o número atual
         }
