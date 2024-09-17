@@ -78,7 +78,7 @@ void segundaChance(std::vector<int>& paginas, int capacidade) {
             std::cout << "\nPagina nao esta presente na memoria!" << std::endl;
             if (fila.size() == capacidade){
                 std::cout << "Memoria cheia!!!" << std::endl;
-                while (!fila.empty() && fila.front().bitR == true) {
+                while (fila.front().bitR == true) {
                     Pagina p = fila.front();
                     fila.pop_front();
                     p.bitR = false;
